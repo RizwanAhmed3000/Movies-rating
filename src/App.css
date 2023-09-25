@@ -7,12 +7,12 @@
   font-family: 'Poppins', sans-serif;
 }
 
-body{
+body {
   background-color: #1b2021;
   color: white;
 }
 
-.topbarContainer{
+.topbarContainer {
   display: flex;
   background-color: #5a37d1;
   align-items: center;
@@ -20,23 +20,23 @@ body{
   padding: 0px 10px;
 }
 
-.topbarLeft{
+.topbarLeft {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.logo{
+.logo {
   width: 60px;
 }
 
-.topbarMid{
+.topbarMid {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.inputField{
+.inputField {
   padding: 8px 10px;
   font-size: 14px;
   width: 400px;
@@ -48,11 +48,11 @@ body{
   color: white;
 }
 
-.inputField::placeholder{
+.inputField::placeholder {
   color: rgb(201, 201, 201);
 }
 
-.searchBtn{
+.searchBtn {
   padding: 5px 10px;
   border-radius: 50px;
   border: none;
@@ -61,7 +61,47 @@ body{
   transition: all 250ms ease;
 }
 
-.searchBtn:hover{
+.searchBtn:hover {
   color: white;
   background-color: #1b2021;
+}
+
+.mainConatiner {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+.left,
+.right {
+  margin: 0px 5px;
+  background-color: #24292c;
+  padding: 10px;
+  min-width: 45%;
+  min-height: 100vh;
+  border-radius: 10px;
+}
+
+
+.box {
+  display: flex;
+  padding: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 250ms ease;
+}
+
+.box:hover {
+  background-color: grey;
+}
+
+.poster {
+  width: 60px;
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: 20px;
 }
