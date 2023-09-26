@@ -1,11 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import './App.css';
-import { StarBorderPurple500Outlined, StarOutlined } from "@mui/icons-material"
 import Rating from '@mui/material/Rating'
 
 function App() {
 
-  const [movieList, setMovieList] = useState([]);
+  const [movieList, setMovieList] = useState();
   const [search, setSearch] = useState("");
   const [singleMovie, setSingleMovie] = useState("");
   const [isMovieTrue, setIsMovieTrue] = useState(false)
@@ -16,7 +15,7 @@ function App() {
       const res = await fetch(`https://www.omdbapi.com/?apikey=3c7f297a&s=${search}`)
       const data = await res.json()
       console.log(data);
-      setMovieList(data.Search)
+      setMovieList(data)
     } catch (error) {
       throw new Error(error)
     }
@@ -29,11 +28,11 @@ function App() {
       console.log(data);
       setSingleMovie(data);
       setIsMovieTrue(true)
-
     } catch (error) {
       throw new Error(error)
     }
   }
+
 
   return (
     <div className="App">
@@ -41,9 +40,13 @@ function App() {
       <div className="mainConatiner">
         <div className="left">
           {
-            movieList.map((movie, index) => (
-              <Movie key={index} movie={movie} singleMovieDetails={singleMovieDetails} />
-            ))
+            movieList?.Response === "True" ?
+              movieList?.Search.map((movie, index) => (
+                <Movie key={index} movie={movie} singleMovieDetails={singleMovieDetails} />
+              )) : movieList?.hasOwnProperty('Error') ? (
+                <Error movieList={movieList} />
+              ) : ""
+
           }
         </div>
         <div className="right">
@@ -140,12 +143,10 @@ function MovieStats({ singleMovie, starValue, setStarValue }) {
 //---------------------------------My rating---------------------------//
 
 function MyRatings({ setStarValue, starValue }) {
-  const loop = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   return (
     <>
       <div className="myRatingContainer">
-        <div  style={{ display: "flex", alignItems: "center" }}>
-
+        <div style={{ display: "flex", alignItems: "center" }}>
           <div className="stars">
             <Rating
               name="simple-controlled"
@@ -156,7 +157,7 @@ function MyRatings({ setStarValue, starValue }) {
               }}
             />
           </div>
-          <p style={{margin: "0px 10px"}}>{starValue}</p>
+          <p style={{ margin: "0px 10px" }}>{starValue}</p>
         </div>
         <AddToListBtn />
       </div>
@@ -170,6 +171,14 @@ function AddToListBtn() {
   return (
     <div className="btn">
       <button className='addBtn'>Add to list</button>
+    </div>
+  )
+}
+
+function Error({ movieList }) {
+  return (
+    <div className="err">
+      <h2>{movieList.Error}</h2>
     </div>
   )
 }
