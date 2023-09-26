@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import './App.css';
 import { StarBorderPurple500Outlined, StarOutlined } from "@mui/icons-material"
+import Rating from '@mui/material/Rating'
 
 function App() {
 
@@ -8,6 +9,7 @@ function App() {
   const [search, setSearch] = useState("");
   const [singleMovie, setSingleMovie] = useState("");
   const [isMovieTrue, setIsMovieTrue] = useState(false)
+  const [starValue, setStarValue] = useState()
 
   async function searchMovies(search) {
     try {
@@ -46,7 +48,7 @@ function App() {
         </div>
         <div className="right">
           {
-            isMovieTrue ? <MovieStats singleMovie={singleMovie} /> : <Stats />
+            isMovieTrue ? <MovieStats singleMovie={singleMovie} setStarValue={setStarValue} starValue={starValue} /> : <Stats />
           }
 
         </div>
@@ -86,7 +88,7 @@ function Movie({ movie, singleMovieDetails }) {
         <img src={movie.Poster || `https://cdn.vectorstock.com/i/preview-1x/82/99/no-image-available-like-missing-picture-vector-43938299.jpg`} alt="" className="poster" />
         <div className="text">
           <p>{movie.Title}</p>
-          <p>{movie.Year}</p>
+          <p>📅{movie.Year}</p>
         </div>
       </div>
     </>
@@ -100,10 +102,10 @@ function Stats() {
     <div className="watchedMovies">
       <h3>Movies you watched</h3>
       <div className="ratingContainer">
-        <p>movies</p>
-        <p>stars</p>
-        <p>Avg stars</p>
-        <p>watch time</p>
+        <p>🎬 0 movies</p>
+        <p>⭐ 0 stars</p>
+        <p>🌟 0 Avg stars</p>
+        <p>⏳ 0 watch time</p>
       </div>
     </div>
   )
@@ -111,7 +113,7 @@ function Stats() {
 
 //---------------------------------single movie stats---------------------------//
 
-function MovieStats({ singleMovie }) {
+function MovieStats({ singleMovie, starValue, setStarValue }) {
   return (
     <>
       <div className='movieStatContainer'>
@@ -126,7 +128,7 @@ function MovieStats({ singleMovie }) {
         </div>
       </div>
       <div className="movieDescription">
-        <MyRatings />
+        <MyRatings starValue={starValue} setStarValue={setStarValue} />
         <p>{singleMovie.Plot}</p>
         <p>Starring {singleMovie.Actors} </p>
         <p>Directed by {singleMovie.Director}</p>
@@ -137,17 +139,24 @@ function MovieStats({ singleMovie }) {
 
 //---------------------------------My rating---------------------------//
 
-function MyRatings() {
+function MyRatings({ setStarValue, starValue }) {
   const loop = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   return (
     <>
       <div className="myRatingContainer">
-        <div className="stars">
-          {
-            loop.map((star, index) => (
-              <StarBorderPurple500Outlined key={index} style={{ color: "gold" }} />
-            ))
-          }
+        <div  style={{ display: "flex", alignItems: "center" }}>
+
+          <div className="stars">
+            <Rating
+              name="simple-controlled"
+              max={10}
+              value={starValue}
+              onChange={(event, newValue) => {
+                setStarValue(newValue);
+              }}
+            />
+          </div>
+          <p style={{margin: "0px 10px"}}>{starValue}</p>
         </div>
         <AddToListBtn />
       </div>
