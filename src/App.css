@@ -82,6 +82,9 @@ body {
   border-radius: 10px;
 }
 
+.right {
+  padding: 0px;
+}
 
 .box {
   display: flex;
@@ -104,4 +107,90 @@ body {
   flex-direction: column;
   justify-content: center;
   padding-left: 20px;
+}
+
+.watchedMovies,
+.movieStatContainer {
+  background-color: #293234;
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 0px 1px 10px #141414;
+  text-align: center;
+}
+
+.ratingContainer {
+  display: flex;
+  justify-content: space-around;
+  margin: 10px 0px;
+  background-color: #293234;
+  border-radius: 5px;
+  padding: 10px 5px;
+}
+
+.movieStatContainer {
+  text-align: left;
+  padding: 10px;
+  border-radius: 0%;
+  display: flex;
+}
+
+.MoviePoster {
+  height: 100%;
+}
+
+.moivePosterRight {
+  width: 180px;
+  height: 200px;
+  object-fit: contain;
+}
+
+.lightDetails {
+  flex: 3;
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+  margin-left: 30px;
+  justify-content: center;
+}
+
+.lightDetails h3,
+.lightDetails p {
+  margin: 5px 0px;
+}
+
+.movieDescription {
+  padding: 10px;
+}
+
+.movieDescription p {
+  margin: 15px 0px;
+  font-style: italic;
+}
+
+.btn {
+  width: 100%;
+}
+
+.addBtn {
+  background-color: #6e45f1;
+  color: white;
+  width: 100%;
+  padding: 8px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  transition: all 250ms ease;
+}
+
+.addBtn:hover {
+  background-color: #8d6bfd;
+}
+
+.myRatingContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #293234;
+  border-radius: 5px;
+  padding: 10px 5px;
 }
