@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import './App.css';
 import Rating from '@mui/material/Rating'
+import { Close } from '@mui/icons-material'
 
 function App() {
 
@@ -9,6 +10,7 @@ function App() {
   const [singleMovie, setSingleMovie] = useState("");
   const [isMovieTrue, setIsMovieTrue] = useState(false)
   const [starValue, setStarValue] = useState()
+  const [movieWatchedList, setMovieWatchedList] = useState([])
 
   async function searchMovies(search) {
     try {
@@ -51,7 +53,17 @@ function App() {
         </div>
         <div className="right">
           {
-            isMovieTrue ? <MovieStats singleMovie={singleMovie} setStarValue={setStarValue} starValue={starValue} /> : <Stats />
+            isMovieTrue ? <MovieStats singleMovie={singleMovie} setStarValue={setStarValue} starValue={starValue} setIsMovieTrue={setIsMovieTrue} setMovieWatchedList={setMovieWatchedList} movieWatchedList={movieWatchedList} setSingleMovie={setSingleMovie} /> : (
+              <>
+                <Stats />
+                {
+                  movieWatchedList.length > 0 ? movieWatchedList?.map((movie, index) => (
+                    <WatchedMovie key={index} starValue={starValue} movie={movie} setStarValue={setStarValue}/>
+                  )) : ""
+                  
+                }
+              </>
+            )
           }
 
         </div>
@@ -116,7 +128,7 @@ function Stats() {
 
 //---------------------------------single movie stats---------------------------//
 
-function MovieStats({ singleMovie, starValue, setStarValue }) {
+function MovieStats({ singleMovie, starValue, setStarValue, setIsMovieTrue, movieWatchedList, setMovieWatchedList, setSingleMovie }) {
   return (
     <>
       <div className='movieStatContainer'>
@@ -131,8 +143,8 @@ function MovieStats({ singleMovie, starValue, setStarValue }) {
         </div>
       </div>
       <div className="movieDescription">
-        <MyRatings starValue={starValue} setStarValue={setStarValue} />
-        <p>{singleMovie.Plot}</p>
+        <MyRatings starValue={starValue} setStarValue={setStarValue} setIsMovieTrue={setIsMovieTrue} singleMovie={singleMovie} setMovieWatchedList={setMovieWatchedList} movieWatchedList={movieWatchedList} setSingleMovie={setSingleMovie} />
+        <p>{singleMovie.Plot} </p>
         <p>Starring {singleMovie.Actors} </p>
         <p>Directed by {singleMovie.Director}</p>
       </div>
@@ -142,7 +154,7 @@ function MovieStats({ singleMovie, starValue, setStarValue }) {
 
 //---------------------------------My rating---------------------------//
 
-function MyRatings({ setStarValue, starValue }) {
+function MyRatings({ setStarValue, starValue, setIsMovieTrue, setMovieWatchedList, movieWatchedList, singleMovie, setSingleMovie }) {
   return (
     <>
       <div className="myRatingContainer">
@@ -159,7 +171,7 @@ function MyRatings({ setStarValue, starValue }) {
           </div>
           <p style={{ margin: "0px 10px" }}>{starValue}</p>
         </div>
-        <AddToListBtn />
+        <AddToListBtn setIsMovieTrue={setIsMovieTrue} setMovieWatchedList={setMovieWatchedList} movieWatchedList={movieWatchedList} singleMovie={singleMovie} setSingleMovie={setSingleMovie} setStarValue={setStarValue} />
       </div>
     </>
   )
@@ -167,18 +179,50 @@ function MyRatings({ setStarValue, starValue }) {
 
 //---------------------------------Add to list btn---------------------------//
 
-function AddToListBtn() {
+function AddToListBtn({ setIsMovieTrue, setMovieWatchedList, movieWatchedList, singleMovie, setStarValue }) {
+
+  function watchListHandler() {
+    setMovieWatchedList([...movieWatchedList, singleMovie])
+  }
+
   return (
     <div className="btn">
-      <button className='addBtn'>Add to list</button>
+      <button className='addBtn' onClick={() => {
+        watchListHandler()
+        setIsMovieTrue(false)
+      }}>Add to list</button>
     </div>
   )
 }
+
+
+//---------------------------------Error---------------------------//
 
 function Error({ movieList }) {
   return (
     <div className="err">
       <h2>{movieList.Error}</h2>
+    </div>
+  )
+}
+
+//---------------------------------watched movie contaniner---------------------------//
+
+function WatchedMovie({ movie, starValue, setStarValue }) {
+  return (
+    <div style={{ margin: "8px 0px" }}>
+      <div className="box" onClick={() => { }}>
+        <img src={movie.Poster || `https://cdn.vectorstock.com/i/preview-1x/82/99/no-image-available-like-missing-picture-vector-43938299.jpg`} alt="" className="poster" />
+        <div className="text">
+          <p>{movie.Title}</p>
+          <div style={{ display: "flex" }}>
+            <p style={{ margin: "0px 3px" }}>⭐ {movie.imdbRating || 0}</p>
+            <p style={{ margin: "0px 3px" }}>🌟 {starValue || 0}</p>
+            <p style={{ margin: "0px 3px" }}>⏳ {movie.Runtime || 0}</p>
+          </div>
+        </div>
+        <Close style={{ marginLeft: "auto" }} />
+      </div>
     </div>
   )
 }
